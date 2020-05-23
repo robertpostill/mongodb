@@ -6,6 +6,8 @@
          db/mongodb/seq
          tests/eli-tester)
 
+(define system-databases '("admin" "config" "local"))
+
 (module+ test
   (when mongod-p
     (test
@@ -15,14 +17,14 @@
        (test
         (mongo-db-names m)
         =>
-        (list "local"))
+        system-databases)
 
        ;; added test for mongo-list-databases: 2011-01-20, JBC
        (test
         (for/list ([d (in-vector (mongo-list-databases m))])
           (hash-ref d 'name))
         =>
-        (list "local"))
+        system-databases)
 
        (define d (make-mongo-db m "test"))
 
@@ -35,30 +37,30 @@
         =>
         empty
 
-        (mongo-db-create-collection! d "test1" #:capped? #f #:size 100)
-        (mongo-db-create-collection! d "test2" #:capped? #f #:size 100 #:max 20)
+        (mongo-db-create-collection! d "test1" #:capped? #t #:size 100)
+        (mongo-db-create-collection! d "test2" #:capped? #t #:size 100 #:max 20)
 
         (mongo-db-collections d)
         =>
-        (list "test2" "test1" "system.indexes")
+        (list "test2" "test1")
 
         (mongo-db-drop-collection! d "test2")
 
         (mongo-db-collections d)
         =>
-        (list "test1" "system.indexes")
+        (list "test1")
 
-        (mongo-db-create-collection! d "test2" #:capped? #f #:size 100 #:max 20)
+        (mongo-db-create-collection! d "test2" #:capped? #t #:size 100 #:max 20)
 
         (mongo-db-collections d)
         =>
-        (list "test2" "test1" "system.indexes")
+        (list "test2" "test1")
 
         (mongo-collection-drop! (make-mongo-collection d "test2"))
 
         (mongo-db-collections d)
         =>
-        (list "test1" "system.indexes")
+        (list "test1")
 
         (mongo-db-drop d)
 
