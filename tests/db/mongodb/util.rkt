@@ -25,9 +25,9 @@
                    ;; "-v"
                    "--quiet"
                    "--nojournal"
-                   "--noprealloc"
+;;                   "--noprealloc"
                    "--dbpath" (path->string dbpath)
-                   "--nohttpinterface"
+ ;;                  "--nohttpinterface"
                    "--noauth"))
      (set! sp the-sp)
      (sleep 3))
