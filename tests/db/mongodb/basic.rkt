@@ -68,11 +68,11 @@
         =>
         empty
 
-        (mongo-db-create-collection! d "test1" #:capped? #f #:size 100)
+        (mongo-db-create-collection! d "test1" #:capped? #t #:size 100)
 
         (mongo-db-collections d)
         =>
-        (list "test1" "system.indexes")
+        (list "test1")
 
         (mongo-db-profiling d)
         =>
