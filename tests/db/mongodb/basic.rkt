@@ -40,9 +40,9 @@
         (mongo-db-create-collection! d "test1" #:capped? #t #:size 100)
         (mongo-db-create-collection! d "test2" #:capped? #t #:size 100 #:max 20)
 
-        (mongo-db-collections d)
+        (sort (mongo-db-collections d) string<?)
         =>
-        (list "test2" "test1")
+        (list  "test1" "test2")
 
         (mongo-db-drop-collection! d "test2")
 
@@ -52,9 +52,9 @@
 
         (mongo-db-create-collection! d "test2" #:capped? #t #:size 100 #:max 20)
 
-        (mongo-db-collections d)
+        (sort (mongo-db-collections d) string<?)
         =>
-        (list "test2" "test1")
+        (list "test1" "test2")
 
         (mongo-collection-drop! (make-mongo-collection d "test2"))
 
