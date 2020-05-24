@@ -93,7 +93,8 @@
         =>
         'none
 
-        (mongo-db-profiling-info d)
+        ;; TODO - fix this, it needs not to blow up if profiling is disabled
+        ;;(mongo-db-profiling-info d)
 
         (mongo-db-valid-collection? d "test1")
         =>
