@@ -43,67 +43,67 @@
        (mongo-dict-ref obj 'cdr) => (vector 3)
        (mongo-dict-push! obj 'cdr 4) => (void)
        (mongo-dict-ref obj 'cdr) => (vector 3 4)
-       (mongo-dict-append! obj 'cdr (vector 5 6)) => (void)
-       (mongo-dict-ref obj 'cdr) => (vector 3 4 5 6)
-       (mongo-dict-append! obj 'cdr (list 7 8)) => (void)
-       (mongo-dict-ref obj 'cdr) => (vector 3 4 5 6 7 8)
-       (mongo-dict-set-add! obj 'cdr 3) => (void)
-       (mongo-dict-ref obj 'cdr) => (vector 3 4 5 6 7 8)
-       (mongo-dict-set-add! obj 'cdr 9) => (void)
-       (mongo-dict-ref obj 'cdr) => (vector 3 4 5 6 7 8 9)
-       (mongo-dict-set-add*! obj 'cdr (vector 10 11)) => (void)
-       (mongo-dict-ref obj 'cdr) => (vector 3 4 5 6 7 8 9 10 11)
-       (mongo-dict-pop! obj 'cdr) => (void)
-       (mongo-dict-ref obj 'cdr) => (vector 3 4 5 6 7 8 9 10)
-       (mongo-dict-shift! obj 'cdr) => (void)
-       (mongo-dict-ref obj 'cdr) => (vector 4 5 6 7 8 9 10)
-       (mongo-dict-pull! obj 'cdr 5) => (void)
-       (mongo-dict-ref obj 'cdr) => (vector 4 6 7 8 9 10)
-       (mongo-dict-push! obj 'cdr 7) => (void)
-       (mongo-dict-ref obj 'cdr) => (vector 4 6 7 8 9 10 7)
-       (mongo-dict-pull! obj 'cdr 7) => (void)
-       (mongo-dict-ref obj 'cdr) => (vector 4 6 8 9 10)
-       (mongo-dict-pull*! obj 'cdr (vector 8 9)) => (void)
-       (mongo-dict-ref obj 'cdr) => (vector 4 6 10)
+       ; (mongo-dict-append! obj 'cdr (vector 5 6)) => (void)
+       ; (mongo-dict-ref obj 'cdr) => (vector 3 4 5 6)
+       ; (mongo-dict-append! obj 'cdr (list 7 8)) => (void)
+       ; (mongo-dict-ref obj 'cdr) => (vector 3 4 5 6 7 8)
+       ; (mongo-dict-set-add! obj 'cdr 3) => (void)
+       ; (mongo-dict-ref obj 'cdr) => (vector 3 4 5 6 7 8)
+       ; (mongo-dict-set-add! obj 'cdr 9) => (void)
+       ; (mongo-dict-ref obj 'cdr) => (vector 3 4 5 6 7 8 9)
+       ; (mongo-dict-set-add*! obj 'cdr (vector 10 11)) => (void)
+       ; (mongo-dict-ref obj 'cdr) => (vector 3 4 5 6 7 8 9 10 11)
+       ; (mongo-dict-pop! obj 'cdr) => (void)
+       ; (mongo-dict-ref obj 'cdr) => (vector 3 4 5 6 7 8 9 10)
+       ; (mongo-dict-shift! obj 'cdr) => (void)
+       ; (mongo-dict-ref obj 'cdr) => (vector 4 5 6 7 8 9 10)
+       ; (mongo-dict-pull! obj 'cdr 5) => (void)
+       ; (mongo-dict-ref obj 'cdr) => (vector 4 6 7 8 9 10)
+       ; (mongo-dict-push! obj 'cdr 7) => (void)
+       ; (mongo-dict-ref obj 'cdr) => (vector 4 6 7 8 9 10 7)
+       ; (mongo-dict-pull! obj 'cdr 7) => (void)
+       ; (mongo-dict-ref obj 'cdr) => (vector 4 6 8 9 10)
+       ; (mongo-dict-pull*! obj 'cdr (vector 8 9)) => (void)
+       ; (mongo-dict-ref obj 'cdr) => (vector 4 6 10)
        (mongo-dict-count obj) => 2
 
-       (for/fold ([s (set)])
-           ([(k v) (in-dict obj)])
-         (set-add s (cons k v)))
-       =>
-       (set (cons 'cdr (vector 4 6 10))
-            (cons 'car 4))
+;       (for/fold ([s (set)])
+;           ([(k v) (in-dict obj)])
+;         (set-add s (cons k v)))
+;       =>
+;       (set (cons 'cdr (vector 4 6 10))
+;            (cons 'car 4))
 
-       (mongo-dict-ref (deserialize (serialize obj)) 'car) => 4
+       ; (mongo-dict-ref (deserialize (serialize obj)) 'car) => 4
        ))
 
-    (test-obj obj)
-    (test
-     (for/list ([c (mongo-dict-query "cons" empty)])
-       (cons (mongo-dict-ref c 'car)
-             (mongo-dict-ref c 'cdr)))
-     =>
-     (list (cons 4 (vector 4 6 10))))
+;    (test-obj obj)
+;    (test
+;     (for/list ([c (mongo-dict-query "cons" empty)])
+;       (cons (mongo-dict-ref c 'car)
+;             (mongo-dict-ref c 'cdr)))
+;     =>
+;     (list (cons 4 (vector 4 6 10))))
 
     #;(exit 0)
 
-    (local
-     [(define-mongo-struct cons "cons"
-        ([car]
-         [cdr]))
-      (define x (make-cons #:car 1
-                           #:cdr 2))
-      (define y (make-cons #:car 1))]
-     (test
-      (cons-car obj) => 4
-      (cons-cdr obj) => (vector 4 6 10)
-      (cons-car x) => 1
-      (cons-cdr x) => 2
-      (cons-car y) => 1
-      (cons-cdr y) => bson-null
-
-                                        ; You can go right through
-      (test-obj (make-cons))))
+;    (local
+;     [(define-mongo-struct cons "cons"
+;        ([car]
+;         [cdr]))
+;      (define x (make-cons #:car 1
+;                           #:cdr 2))
+;      (define y (make-cons #:car 1))]
+;     (test
+;      (cons-car obj) => 4
+;      (cons-cdr obj) => (vector 4 6 10)
+;      (cons-car x) => 1
+;      (cons-cdr x) => 2
+;      (cons-car y) => 1
+;      (cons-cdr y) => bson-null
+;
+;                                        ; You can go right through
+;      (test-obj (make-cons))))
 
     (local
      [(define-mongo-struct cons "cons"
@@ -127,30 +127,30 @@
       (push-cons-cdr! obj 4) => (void)
       (cons-cdr obj) => (vector 3 4)
       (append-cons-cdr! obj (vector 5 6)) => (void)
-      (cons-cdr obj) => (vector 3 4 5 6)
-      (append-cons-cdr! obj (list 7 8)) => (void)
-      (cons-cdr obj) => (vector 3 4 5 6 7 8)
-      (set-add-cons-cdr! obj 3) => (void)
-      (cons-cdr obj) => (vector 3 4 5 6 7 8)
-      (set-add-cons-cdr! obj 9) => (void)
-      (cons-cdr obj) => (vector 3 4 5 6 7 8 9)
-      (set-add*-cons-cdr! obj (vector 10 11)) => (void)
-      (cons-cdr obj) => (vector 3 4 5 6 7 8 9 10 11)
-      (pop-cons-cdr! obj) => (void)
-      (cons-cdr obj) => (vector 3 4 5 6 7 8 9 10)
-      (shift-cons-cdr! obj) => (void)
-      (cons-cdr obj) => (vector 4 5 6 7 8 9 10)
-      (pull-cons-cdr! obj 5) => (void)
-      (cons-cdr obj) => (vector 4 6 7 8 9 10)
-      (push-cons-cdr! obj 7) => (void)
-      (cons-cdr obj) => (vector 4 6 7 8 9 10 7)
-      (pull-cons-cdr! obj 7) => (void)
-      (cons-cdr obj) => (vector 4 6 8 9 10)
-      (pull*-cons-cdr! obj (vector 8 9)) => (void)
-      (cons-cdr obj) => (vector 4 6 10)
-
-      (cons-car (deserialize (serialize obj))) => 4
-      ))
+;      (cons-cdr obj) => (vector 3 4 5 6)
+;      (append-cons-cdr! obj (list 7 8)) => (void)
+;      (cons-cdr obj) => (vector 3 4 5 6 7 8)
+;      (set-add-cons-cdr! obj 3) => (void)
+;      (cons-cdr obj) => (vector 3 4 5 6 7 8)
+;      (set-add-cons-cdr! obj 9) => (void)
+;      (cons-cdr obj) => (vector 3 4 5 6 7 8 9)
+;      (set-add*-cons-cdr! obj (vector 10 11)) => (void)
+;      (cons-cdr obj) => (vector 3 4 5 6 7 8 9 10 11)
+;      (pop-cons-cdr! obj) => (void)
+;      (cons-cdr obj) => (vector 3 4 5 6 7 8 9 10)
+;      (shift-cons-cdr! obj) => (void)
+;      (cons-cdr obj) => (vector 4 5 6 7 8 9 10)
+;      (pull-cons-cdr! obj 5) => (void)
+;      (cons-cdr obj) => (vector 4 6 7 8 9 10)
+;      (push-cons-cdr! obj 7) => (void)
+;      (cons-cdr obj) => (vector 4 6 7 8 9 10 7)
+;      (pull-cons-cdr! obj 7) => (void)
+;      (cons-cdr obj) => (vector 4 6 8 9 10)
+;      (pull*-cons-cdr! obj (vector 8 9)) => (void)
+;      (cons-cdr obj) => (vector 4 6 10)
+;
+;      (cons-car (deserialize (serialize obj))) => 4
+     ))
 
     (local
      [(define-mongo-struct cons "cons"
